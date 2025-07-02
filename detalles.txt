@@ -1,0 +1,248 @@
+# Especificaciones Técnicas: Desarrollo Web Yataco Consultores SAC
+
+## **Contexto del Proyecto**
+Desarrollar una aplicación web moderna y profesional para **Yataco Consultores SAC**, empresa líder en servicios de asesoría contable, administrativa y financiera en Perú. La plataforma debe posicionarse como referente de excelencia en el sector de consultoría empresarial peruana.
+
+## **Objetivos Técnicos**
+
+### **Performance & Arquitectura**
+- **Framework Principal**: Next.js 14+ con App Router para SSR/SSG optimizado
+- **Styling**: Tailwind CSS + Framer Motion para animaciones fluidas
+- **Estado Global**: Zustand para manejo de estado ligero
+- **Internacionalización**: next-i18next para soporte multiidioma
+- **Base de Datos**: Headless CMS (Strapi/Sanity) para gestión de contenido
+- **Hosting**: Vercel/Netlify con CDN global para latencia < 200ms
+
+### **Stack Tecnológico Recomendado**
+```javascript
+// Frontend Stack
+- Next.js 14+ (React 18+)
+- TypeScript para type safety
+- Tailwind CSS + HeadlessUI
+- Framer Motion para animaciones
+- React Hook Form + Zod para formularios
+- SWR/TanStack Query para data fetching
+```
+
+## **Requisitos Funcionales**
+
+### **1. Arquitectura Multiidioma**
+- **Idiomas soportados**: Español (es), Inglés (en), Chino (zh)
+- **Implementación**: 
+  - URLs localizadas: `/es/servicios`, `/en/services`, `/zh/服务`
+  - Detección automática de idioma por geolocalización
+  - Selector de idioma persistente en localStorage
+  - Contenido dinámico traducido desde CMS
+
+### **2. Sistema de Temas (Dark/Light Mode)**
+```javascript
+// Implementación con CSS Variables + Local Storage
+const themeConfig = {
+  light: { primary: '#1E40AF', secondary: '#059669' },
+  dark: { primary: '#3B82F6', secondary: '#10B981' }
+}
+```
+
+### **3. Componentes Principales Requeridos**
+
+#### **Header Navigation**
+- Logo responsivo de Yataco Consultores
+- Menú hamburguesa para móviles con animación slide
+- Selector de idioma con flags animados
+- Toggle dark/light mode con transición suave
+- CTA button "Solicitar Consulta Gratuita"
+
+#### **Hero Section**
+- **Título Principal**: "Líderes en Asesoría Empresarial en Perú"
+- **Subtítulo**: Especialistas en transformación contable, tributaria y financiera
+- **Video Background**: Profesionales trabajando en oficina moderna
+- **Animaciones**: Typewriter effect + fade-in staggered
+- **CTA Dual**: "Agendar Cita" + "Ver Servicios"
+
+#### **Servicios Top Section**
+```javascript
+const serviciosTop = [
+  {
+    icon: "📊",
+    titulo: "Asesoría Tributaria Especializada",
+    descripcion: "Optimización fiscal y cumplimiento normativo SUNAT",
+    imagen: "https://unsplash.com/tax-consultation-peru-office",
+    beneficios: ["Reducción 30% cargas tributarias", "Cumplimiento 100% normativo"]
+  },
+  {
+    icon: "💰", 
+    titulo: "Consultoría Financiera Estratégica",
+    descripcion: "Análisis financiero y planning empresarial",
+    imagen: "https://unsplash.com/financial-consulting-modern-office",
+    beneficios: ["ROI incremento 25%", "Cash flow optimizado"]
+  },
+  {
+    icon: "📈",
+    titulo: "Contabilidad Integral Digitalizada", 
+    descripcion: "Automatización contable con tecnología cloud",
+    imagen: "https://unsplash.com/digital-accounting-software",
+    beneficios: ["Procesos 50% más rápidos", "Reportes real-time"]
+  }
+]
+```
+
+#### **Carousel de Casos de Éxito**
+- **Autoplay**: 5 segundos con pause en hover
+- **Navegación**: Dots + arrows con hover effects
+- **Contenido**: Testimonios de clientes + métricas de resultados
+- **Imágenes**: Logos de empresas cliente (con permiso)
+
+#### **Formulario de Contacto Inteligente**
+```javascript
+// Validaciones en tiempo real
+const contactSchema = z.object({
+  empresa: z.string().min(2, "Nombre empresa requerido"),
+  email: z.string().email("Email válido requerido"),
+  telefono: z.string().regex(/^9\d{8}$/, "Formato: 9XXXXXXXX"),
+  servicio: z.enum(["tributaria", "financiera", "contable"]),
+  mensaje: z.string().min(10, "Mensaje mínimo 10 caracteres")
+})
+```
+
+## **Requisitos de Diseño UX/UI**
+
+### **Paleta de Colores Profesional**
+```css
+:root {
+  --primary-blue: #1E40AF;
+  --secondary-green: #059669; 
+  --accent-gold: #F59E0B;
+  --neutral-gray: #6B7280;
+  --success-green: #10B981;
+  --error-red: #EF4444;
+}
+```
+
+### **Typography Scale**
+- **Primary Font**: Inter (sans-serif) para legibilidad
+- **Secondary Font**: Playfair Display para títulos elegantes
+- **Scale**: 12px, 14px, 16px, 18px, 24px, 32px, 48px, 64px
+
+### **Animaciones & Microinteracciones**
+```javascript
+// Framer Motion Variants
+const fadeInUp = {
+  initial: { opacity: 0, y: 60 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+}
+
+const staggerContainer = {
+  animate: { transition: { staggerChildren: 0.1 } }
+}
+```
+
+## **Integración de Imágenes de Alta Calidad**
+
+### **Fuentes de Imágenes**
+- **Unsplash API**: Búsquedas automáticas por keywords
+- **Keywords específicos**: 
+  - "peru business consulting office"
+  - "tax accounting professionals lima"
+  - "financial planning meeting modern"
+  - "corporate office lima peru"
+  - "business handshake professional"
+
+### **Optimización de Imágenes**
+```javascript
+// Next.js Image Component optimizado
+<Image
+  src={imageUrl}
+  alt={altText}
+  width={800}
+  height={600}
+  priority={isAboveFold}
+  placeholder="blur"
+  blurDataURL="data:image/jpeg;base64,..."
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+/>
+```
+
+## **Responsividad & Performance**
+
+### **Breakpoints Estratégicos**
+```css
+/* Mobile First Approach */
+.container {
+  @apply px-4;
+  
+  @screen sm { @apply px-6 max-w-xl; }
+  @screen md { @apply px-8 max-w-3xl; }
+  @screen lg { @apply px-12 max-w-6xl; }
+  @screen xl { @apply px-16 max-w-7xl; }
+}
+```
+
+### **Métricas de Performance Target**
+- **Core Web Vitals**:
+  - LCP (Largest Contentful Paint): < 2.5s
+  - FID (First Input Delay): < 100ms  
+  - CLS (Cumulative Layout Shift): < 0.1
+- **Lighthouse Score**: 95+ en todas las categorías
+- **Bundle Size**: < 250KB initial bundle
+
+## **SEO & Analytics**
+
+### **Meta Tags Estratégicos**
+```javascript
+// Per-page SEO optimization
+export const metadata = {
+  title: "Yataco Consultores SAC | Líderes en Asesoría Empresarial Perú",
+  description: "✅ Especialistas en asesoría tributaria, financiera y contable. Más de 500 empresas confían en nosotros. ¡Consulta gratuita!",
+  keywords: "asesoria contable peru, consultoria financiera lima, asesoria tributaria sunat",
+  openGraph: {
+    title: "Yataco Consultores SAC - Asesoría Empresarial Premium",
+    description: "Transformamos tu empresa con asesoría especializada",
+    image: "/og-yataco-consultores.jpg"
+  }
+}
+```
+
+### **Tracking & Conversiones**
+- **Google Analytics 4**: Event tracking para formularios
+- **Facebook Pixel**: Retargeting campaigns
+- **Hotjar**: Heatmaps y user behavior
+- **Lead Generation**: Integración CRM (HubSpot/Salesforce)
+
+## **Deliverables Esperados**
+
+### **Implementación Completa Inmediata**
+- ✅ Landing page responsiva con hero + servicios
+- ✅ Sistema multiidioma completo (ES/EN/ZH)
+- ✅ Dark/Light mode toggle funcional
+- ✅ Formulario de contacto con validaciones
+- ✅ Carousel de testimonios animado
+- ✅ Galería de servicios con imágenes HD
+- ✅ Animaciones y transiciones premium
+- ✅ Optimización SEO completa
+- ✅ Código limpio y documentado
+
+## **Criterios de Aceptación**
+
+### **Funcionalidad**
+- [ ] Web 100% responsiva en devices 320px - 1920px
+- [ ] Cambio de idioma sin page refresh
+- [ ] Dark mode persistente entre sesiones
+- [ ] Formularios con validación real-time
+- [ ] Imágenes con lazy loading automático
+
+### **Performance**
+- [ ] Lighthouse score 95+ desktop/mobile
+- [ ] Time to Interactive < 3 segundos
+- [ ] Bundle optimizado con tree shaking
+- [ ] Imágenes WebP + fallback automático
+
+### **UX/UI**
+- [ ] Animaciones fluidas 60fps
+- [ ] Microinteracciones en hover states
+- [ ] Loading states elegantes
+- [ ] Error handling user-friendly
+- [ ] Accesibilidad WCAG 2.1 AA compliant
+
+---
+
+**Nota Técnica**: Implementar siguiendo principios SOLID, atomic design pattern y clean architecture. Documentación técnica completa requerida con JSDoc + Storybook para componentes reutilizables.
